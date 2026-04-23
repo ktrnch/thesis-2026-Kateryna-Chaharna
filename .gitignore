@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+.venv/
+env/
+.DS_Store
+
+*_meta.json
+*_weights*.tsv
+*_h2_report.tsv
+phenotype_*.txt
+
+
+*.raw
+*.tsv
