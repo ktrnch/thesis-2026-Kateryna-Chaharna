@@ -58,6 +58,6 @@ Simulated data can be reprodused using the same seed number. Besides there is co
 `data/configs/` — archived configs (`<prefix>_config.json`) can be identified based on prefix. 
 
 # Limitations
-Simulator only accepts PLINK.raw files and relayes on its structure. 
+Simulator only accepts PLINK.raw files and relies on its structure. 
 
 # How to cite this simulator
