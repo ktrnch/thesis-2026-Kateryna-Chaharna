@@ -1,5 +1,5 @@
 {
-  "output_prefix": "lin_h2_02",
+  "output_prefix": "lin_ld",
   "seed": 7,
   "phenotype_type": "quantitative",
   "phenotype_number": 1,
@@ -10,7 +10,7 @@
   "causal_snps": null,
   "ld_mode": true,
   "ld_threshold": 1000,
-  "chromosome_file": "10K_SNP_1000g_real.snpinfo.tsv",
+  "chromosome_file": "data/10K_SNP_1000G_real.snpinfo.tsv",
   "second_inter_num": 0,
   "third_inter_num": 0,
   "dom_num": 0,

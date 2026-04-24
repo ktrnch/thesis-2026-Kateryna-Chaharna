@@ -4,6 +4,8 @@ import numpy as np
 import pandas as pd
 import random
 import json
+import shutil
+from pathlib import Path
 
 from simulator.sampling import (
     set_seeds, parse_csv_names, ensure_unique,
@@ -16,6 +18,10 @@ from simulator.transformer import recode_to_minus101
 def simulate(
     raw_path: str, #path to the file with genotype
     output_prefix: str = "sim",
+    output_dir: str = "data/runs/sim",
+    config_source_path: Optional[str] = None,
+    config_archive_dir: str = "data/configs",
+
     seed: int = 7, #sets seed of random generator fixed seed -> same parameeters give same results
     phenotype_type: str = "quantitative",  # "quantitative" or "binary"
     phenotype_number: int = 1,
@@ -388,57 +394,65 @@ def simulate(
         d.insert(0, "IID", iids)
 
     # ---------------- write files ----------------
-    df_wo.to_csv("phenotype_without_noise.txt", sep="\t", index=False)
-    df_w.to_csv("phenotype_with_noise.txt",  sep="\t", index=False)
-    df_f.to_csv("final_phenotype.txt",       sep="\t", index=False)
+    out_dir = Path(output_dir)
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    cfg_dir = Path(config_archive_dir)
+    cfg_dir.mkdir(parents=True, exist_ok=True)
+
+    # Core phenotype outputs
+    df_wo.to_csv(out_dir / "phenotype_without_noise.txt", sep="\t", index=False)
+    df_w.to_csv(out_dir / "phenotype_with_noise.txt", sep="\t", index=False)
+    df_f.to_csv(out_dir / "final_phenotype.txt", sep="\t", index=False)
 
     # SNP selection per phenotype (names)
     pd.DataFrame({
         "Phenotype": pheno_labels,
         "Selected_SNPs": [",".join(lst) for lst in phenotype_snps]
-    }).to_csv("phenotype_snps.csv", index=False)
+    }).to_csv(out_dir / "phenotype_snps.csv", index=False)
 
     # Role assignments (causal pool, interaction sets, dominant/recessive)
-    with open(f"{output_prefix}_SNP_ASSIGNMENTS.txt","w") as f:
-        def w(label,lst): f.write(f"{label}\t"+("\t".join(lst) if lst else "")+"\n")
+    with open(out_dir / f"{output_prefix}_SNP_ASSIGNMENTS.txt", "w") as f:
+        def w(label, lst):
+            f.write(f"{label}\t" + ("\t".join(lst) if lst else "") + "\n")
         w("Causal_Positions", causal_pool)
         w("Init_Second_Order", init2);  w("Second_Second_Order", pair2)
-        w("Init_Third_Order",  init3);  w("Second_Third_Order", b3); w("Third_Third_Order", c3)
+        w("Init_Third_Order", init3);   w("Second_Third_Order", b3); w("Third_Third_Order", c3)
         w("Dominant_Positions", dominant_pos); w("Recessive_Positions", recessive_pos)
 
-    # Weights: if renewed per-phenotype, write wide tables; else a single table
+    # Weights
     if weight_renewal:
         wlin = pd.DataFrame({"SNP": df_causal.index})
         wint = pd.DataFrame({"SNP": df_causal.index})
         for p in range(phenotype_number):
             wlin[f"lin_w_p{p+1}"] = weights_linear[p]
             wint[f"int_w_p{p+1}"] = interaction_weight_scale * weights_inter[p]
-        wlin.to_csv(f"{output_prefix}_weights_linear.tsv", sep="\t", index=False, float_format="%.6f")
-        wint.to_csv(f"{output_prefix}_weights_interaction.tsv", sep="\t", index=False, float_format="%.6f")
+        wlin.to_csv(out_dir / f"{output_prefix}_weights_linear.tsv", sep="\t", index=False, float_format="%.6f")
+        wint.to_csv(out_dir / f"{output_prefix}_weights_interaction.tsv", sep="\t", index=False, float_format="%.6f")
     else:
         pd.DataFrame({
-            "SNP":                df_causal.index,
-            "linear_weight":      weights_linear,
+            "SNP": df_causal.index,
+            "linear_weight": weights_linear,
             "interaction_weight": interaction_weight_scale * weights_inter
-        }).to_csv(f"{output_prefix}_weights.tsv", sep="\t", index=False, float_format="%.6f")
+        }).to_csv(out_dir / f"{output_prefix}_weights.tsv", sep="\t", index=False, float_format="%.6f")
 
-    # Heritability summary (quantitative phenotypes only)
+    # Heritability summary
     h2_df = None
     if phenotype_type == "quantitative":
         rows = []
         for i in range(G.shape[0]):
-            vg = float(np.var(G[i,:],            ddof=1))  # variance of genetic component
-            vy = float(np.var(G_with_noise[i,:], ddof=1))  # variance after adding noise
+            vg = float(np.var(G[i, :], ddof=1))
+            vy = float(np.var(G_with_noise[i, :], ddof=1))
             rows.append({
-                "phenotype_id": i+1,
+                "phenotype_id": i + 1,
                 "var_genetic": vg,
-                "var_total":   vy,
+                "var_total": vy,
                 "h2_realized": (vg / vy) if vy > 0 else np.nan
             })
         h2_df = pd.DataFrame(rows)
-        h2_df.to_csv(f"{output_prefix}_h2_report.tsv", sep="\t", index=False)
+        h2_df.to_csv(out_dir / f"{output_prefix}_h2_report.tsv", sep="\t", index=False)
 
-    # Metadata for reproducibility
+    # Metadata
     meta = dict(
         seed=seed, phenotype_type=phenotype_type, phenotype_number=phenotype_number,
         causal_var_pool_num=causal_var_pool_num, causal_var_min=causal_var_min, causal_var_max=causal_var_max,
@@ -451,13 +465,19 @@ def simulate(
         force_defined_interactions=force_defined_interactions,
         n_individuals=int(len(iids)), n_causal_pool=int(len(causal_pool))
     )
-    with open(f"{output_prefix}_meta.json","w") as jf:
+    with open(out_dir / f"{output_prefix}_meta.json", "w") as jf:
         json.dump(meta, jf, indent=2)
 
-    print("[done] phenotype_without_noise.txt | phenotype_with_noise.txt | final_phenotype.txt")
+    # Save a copy of the config separately
+    if config_source_path:
+        src = Path(config_source_path)
+        if src.exists():
+            shutil.copy2(src, cfg_dir / f"{output_prefix}_config.json")
+
+    print(f"[done] outputs written to {out_dir}")
     if phenotype_type == "quantitative":
-        print(f"[done] {output_prefix}_h2_report.tsv")
-    print(f"[done] {output_prefix}_SNP_ASSIGNMENTS.txt and weights/meta")
+        print(f"[done] {out_dir / f'{output_prefix}_h2_report.tsv'}")
+    print(f"[done] config snapshot: {cfg_dir / f'{output_prefix}_config.json'}")
 
     # Return key DataFrames for immediate use in the notebook
     return {
