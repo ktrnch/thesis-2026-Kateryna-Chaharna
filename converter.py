@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 
 CONFIG = dict(
-    output_prefix="lin_ld",
+    output_prefix="lin",
     seed=7,  # same seed = same weights for the same param.
     phenotype_type="quantitative",  # "quantitative" or "binary"
     phenotype_number=1,
@@ -14,7 +14,7 @@ CONFIG = dict(
     causal_snps=None,  # OR comma-separated snp names string e. g. SNP166, SNPn
 
     # LD mode
-    ld_mode=True,
+    ld_mode= False,
     ld_threshold=1000,
     chromosome_file="data/10K_SNP_1000G_real.snpinfo.tsv",
 
