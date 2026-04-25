@@ -1,0 +1,43 @@
+Start time: Sat Apr 25 14:11:45 2026
+
+              |===========================|
+              |      REGENIE v3.4.gz      |
+              |===========================|
+
+Copyright (c) 2020-2023 Joelle Mbatchou, Andrey Ziyatdinov and Jonathan Marchini.
+Distributed under the MIT License.
+Compiled with Boost Iostream library.
+
+Log of output saved in file : results/regenie/lin/step1.log
+
+Options in effect:
+  --step 1 \
+  --bed data_for_regenie/data \
+  --phenoFile data/runs/lin/final_phenotype.txt \
+  --qt \
+  --bsize 1000 \
+  --out results/regenie/lin/step1
+
+Fitting null model
+ * bim              : [data_for_regenie/data.bim] n_snps = 10000
+ * fam              : [data_for_regenie/data.fam] n_samples = 2504
+ * bed              : [data_for_regenie/data.bed]
+ * phenotypes       : [data/runs/lin/final_phenotype.txt] n_pheno = 1
+   -dropping observations with missing values at any of the phenotypes
+   -number of phenotyped individuals with no missing data = 2504
+ * number of individuals used in analysis = 2504
+ * number of observations for each trait:
+   - 'Phenotype_1': 2504 observations
+   -residualizing and scaling phenotypes...done (0ms) 
+ * # threads        : [7]
+ * block size       : [1000]
+ * # blocks         : [10] for 10000 variants
+ * # CV folds       : [5]
+ * ridge data_l0    : [5 : 0.01 0.25 0.5 0.75 0.99 ]
+ * ridge data_l1    : [5 : 0.01 0.25 0.5 0.75 0.99 ]
+ * approximate memory usage : 23MB
+ * setting memory...done
+
+Chromosome 15
+ block [1] : 1000 snps  (35ms) 
+   -residualizing and scaling genotypes...ERROR: !! Uh-oh, SNP 15:27425203_G_A has low variance (=0.000000).
