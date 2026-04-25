@@ -148,6 +148,7 @@ def simulate(
 
     # Recode to {-1,0,1} and switch orientation: rows=SNPs, cols=individuals
     geno = recode_to_minus101(df_012)
+    fids = df_raw["FID"].reset_index(drop=True)
     iids = df_raw["IID"].reset_index(drop=True)
     all_snp_names = geno.index.tolist()
 
@@ -391,7 +392,8 @@ def simulate(
     df_w  = pd.DataFrame(G_with_noise.T, columns=pheno_labels)
     df_f  = pd.DataFrame(F.T, columns=pheno_labels)
     for d in (df_wo, df_w, df_f):
-        d.insert(0, "IID", iids)
+        d.insert(0, "FID", fids)
+        d.insert(1, "IID", iids)
 
     # ---------------- write files ----------------
     out_dir = Path(output_dir)
@@ -479,7 +481,7 @@ def simulate(
         print(f"[done] {out_dir / f'{output_prefix}_h2_report.tsv'}")
     print(f"[done] config snapshot: {cfg_dir / f'{output_prefix}_config.json'}")
 
-    # Return key DataFrames for immediate use in the notebook
+    # Return key DataFrames 
     return {
         "phenotype_without_noise": df_wo,
         "phenotype_with_noise":    df_w,
