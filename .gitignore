@@ -10,5 +10,6 @@ env/
 phenotype_*.txt
 
 
+*.zip
 *.raw
 *.tsv
