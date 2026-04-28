@@ -5,7 +5,7 @@ from pathlib import Path
 from simulator.simulate import simulate
 
 RAW = "data/10K_SNP_1000G_real.raw"
-CONFIG_PATH = Path("configs_lin.json")
+CONFIG_PATH = Path("configs_addit2.json")
 
 with open(CONFIG_PATH, "r") as linear_only:
     CONFIG = json.load(linear_only)

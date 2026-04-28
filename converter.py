@@ -2,9 +2,9 @@ import json
 from pathlib import Path
 
 CONFIG = dict(
-    output_prefix="lin",
+    output_prefix="b_lin",
     seed=7,  # same seed = same weights for the same param.
-    phenotype_type="quantitative",  # "quantitative" or "binary"
+    phenotype_type="binary",  # "quantitative" or "binary"
     phenotype_number=1,
     n_indiv_max=None,  # keep first N individuals for memory friendliness (None = use all)
 
@@ -31,7 +31,7 @@ CONFIG = dict(
     force_defined_interactions=False,
 
     # heritability / noise (for quantitative)
-    target_h2=0.2,
+    target_h2=None,
     noise_factor=0.0,  # ignored if target_h2 is set
 
     # output mapping phenotype
