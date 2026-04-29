@@ -1,4 +1,4 @@
-# Genotype-phenotype simulator "GenPhenSim" 
+# Genotype-phenotype simulator "Gen2PhenSim" 
 
 Genotype-to-phenotype simulator from PLINK `.raw` input.
 
