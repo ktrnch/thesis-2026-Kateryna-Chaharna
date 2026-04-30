@@ -1,0 +1,58 @@
+Start time: Thu Apr 30 17:01:13 2026
+
+              |===========================|
+              |      REGENIE v3.4.gz      |
+              |===========================|
+
+Copyright (c) 2020-2023 Joelle Mbatchou, Andrey Ziyatdinov and Jonathan Marchini.
+Distributed under the MIT License.
+Compiled with Boost Iostream library.
+
+Log of output saved in file : b_lin_step2.log
+
+Options in effect:
+  --step 2 \
+  --bgen data_for_regenie/data_step2_filtered.bgen \
+  --sample data_for_regenie/data_step2_filtered.sample \
+  --phenoFile data/runs/b_lin/final_phenotype.txt \
+  --bt \
+  --bsize 1000 \
+  --pred results/regenie/b_lin_step1_pred.list \
+  --out b_lin_step2
+
+Association testing mode
+ * bgen             : [data_for_regenie/data_step2_filtered.bgen]
+   -summary : bgen file (v1.2 layout, zlib compressed) with 2504 named samples and 5233 variants with 16-bit encoding.
+   -sample file: data_for_regenie/data_step2_filtered.sample
+ * phenotypes       : [data/runs/b_lin/final_phenotype.txt] n_pheno = 1
+   -dropping observations with missing values at any of the phenotypes
+   -number of phenotyped individuals with no missing data = 2504
+ * number of individuals used in analysis = 2504
+ * case-control counts for each trait:
+   - 'Phenotype_1': 501 cases and 2003 controls
+ * LOCO predictions : [results/regenie/b_lin_step1_pred.list]
+   -file [/Users/katerynacagarna/Desktop/Thesis/Code_thesis/results/regenie/b_lin_step1_1.loco] for phenotype 'Phenotype_1'
+ * # threads        : [7]
+ * block size       : [1000]
+ * # blocks         : [6]
+ * approximate memory usage : 40MB
+ * using minimum MAC of 5 (variants with lower MAC are ignored)
+
+Chromosome 15 [6 blocks in total]
+   -reading loco predictions for the chromosome...done (4ms) 
+   -fitting null logistic regression on binary phenotypes...done (1ms) 
+ block [1/6] : done (595ms) 
+ block [2/6] : done (576ms) 
+ block [3/6] : done (579ms) 
+ block [4/6] : done (578ms) 
+ block [5/6] : done (569ms) 
+ block [6/6] : done (137ms) 
+
+Association results stored separately for each trait in files : 
+* [b_lin_step2_Phenotype_1.regenie]
+
+Number of ignored tests due to low MAC : 0
+
+Elapsed time : 3.13112s
+End time: Thu Apr 30 17:01:16 2026
+
