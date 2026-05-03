@@ -1,6 +1,7 @@
 # Genotype-phenotype simulator "Gen2PhenSim" 
 
 Genotype-to-phenotype simulator from PLINK `.raw` input.
+Can be used for performance assessment of statistical tools that are used to study genotype-phenotype relationships. 
 
 ## Overview
 
@@ -54,7 +55,7 @@ Config snapshot:
 
 # Reproducibility
 
-Simulated data can be reprodused using the same seed number. Besides there is configs archive. It stores data provided by user for the simulation.
+Simulated data can be reproduced using the same seed number. Besides there is a configs archive. It stores data provided by user for the simulation.
 `data/configs/` — archived configs (`<prefix>_config.json`) can be identified based on prefix. 
 
 # Limitations
