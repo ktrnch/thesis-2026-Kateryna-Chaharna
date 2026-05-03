@@ -26,10 +26,10 @@ def identify_causal_snps(snp_p_values, p_value_threshold):
 
 def compare_causal_snps(identified_causal_snps, true_causal_snps_file):
     # Read the true causal SNPs from the file
-    true_causal_snps_df = pd.read_csv(true_causal_snps_file, sep='\t')
+    true_causal_snps_df = pd.read_csv(true_causal_snps_file, sep='\t', header=None)
     # First row is list of causal SNPs without the first column, so we take the first row and convert it to a list
-    true_causal_snps = true_causal_snps_df.columns[1:].tolist()  # Skip the first column which is not a SNP
-    print(f"True Causal SNPs: {true_causal_snps}")  # Print the true causal SNPs for verification 
+    true_causal_snps = true_causal_snps_df.iloc[0, 1:].dropna().tolist()  # Skip the first column which is not a SNP, drop NaN for empty
+    #print(f"True Causal SNPs: {true_causal_snps}")  # Print the true causal SNPs for verification 
     # Compare identified causal SNPs with true causal SNPs
     true_positives = set(identified_causal_snps) & set(true_causal_snps)
     false_positives = set(identified_causal_snps) - set(true_causal_snps)
@@ -38,18 +38,19 @@ def compare_causal_snps(identified_causal_snps, true_causal_snps_file):
     return true_positives, false_positives, false_negatives
 
 def extract_prefix_from_filename(filename):
-    prefix = filename.split('.')[0]  # Remove the file extension
+    prefix = filename.split('.')[0] # Remove the file extension
+    prefix = prefix.split('/')[-1] # Get the last part of the path, which is the filename without extension
     return prefix
 
 
 # Lists of paths to the step2 output files
-step2_linear_outputs = ['results/regenie/b_lin_ld_step2_Phenotype_1.regenie', 'results/regenie/b_lin_step2_Phenotype_2.regenie',
-                 'results/regenie/q_lin_ld_step2_Phenotype_3.regenie', 'results/regenie/q_lin_step2_Phenotype_4.regenie' ]  
+step2_linear_outputs = ['results/regenie/b_lin_ld_step2_Phenotype_1.regenie', 'results/regenie/b_lin_step2_Phenotype_1.regenie',
+                 'results/regenie/q_lin_ld_step2_Phenotype_1.regenie', 'results/regenie/q_lin_step2_Phenotype_1.regenie' ]  
 
 step2_additive_outputs = ['results/regenie/addit2/addit2_step2_Phenotype_1.regenie',
-                          'results/regenie/addit2_ld/addit2_ld_step2_Phenotype_2.regenie', 
+                          'results/regenie/addit2_ld/addit2_ld_step2_Phenotype_1.regenie', 
                           'results/regenie/addit2nd3/addit2nd3_step2_Phenotype_1.regenie',
-                          'results/regenie/addit2nd3_ld/addit2nd3_ld_step2_Phenotype_2.regenie']
+                          'results/regenie/addit2nd3_ld/addit2nd3_ld_step2_Phenotype_1.regenie']
 
 p_value_threshold = 0.05  # Threshold for identifying causal SNPs
 #list of paths to the files containing true causal SNPs for each phenotype, in the same order as the step2 output files
@@ -61,16 +62,31 @@ true_causal_snps_files = ['data/runs/b_lin_ld/b_lin_ld_SNP_ASSIGNMENTS.txt', 'da
 
 
 def main():
+    results_list  = []
     for step2_output, true_causal_snps_file in zip(step2_linear_outputs + step2_additive_outputs, true_causal_snps_files):
         print(f"Processing file: {step2_output}")
-        snp_p_values = extract_p_values(step2_output)
-        identified_causal_snps = identify_causal_snps(snp_p_values, p_value_threshold)
-        true_positives, false_positives, false_negatives = compare_causal_snps(identified_causal_snps, true_causal_snps_file)
-        
-        print(f"True Positives: {true_positives}")
-        print(f"False Positives: {false_positives}")
-        print(f"False Negatives: {false_negatives}")
-        print("\n")  # Add a newline for better readability between results
+        try:
+            snp_p_values = extract_p_values(step2_output)
+            identified_causal_snps = identify_causal_snps(snp_p_values, p_value_threshold)
+            true_positives, false_positives, false_negatives = compare_causal_snps(identified_causal_snps, true_causal_snps_file)
+            prefix = extract_prefix_from_filename(step2_output)
+            results_list.append({ 
+                'Conditions': prefix,
+                "True Positives" :len(true_positives),
+                "False Positives": len(false_positives), 
+                "False Negatives": len(false_negatives),
+                "True Causal SNPs": len(true_positives) + len(false_negatives)   
+            })
+
+        except FileNotFoundError as e:
+            print(f"File not found: {e}")
+            print("Skipping this file.\n")
+        except Exception as e:
+            print(f"Error processing {step2_output}: {e}")
+            print("Skipping this file.\n")
+    # Create a DataFrame from the results list and save it to a CSV file
+    results_df = pd.DataFrame(results_list)
+    results_df.to_csv('results/gwas_performance.csv', index=False)
 
 
 if __name__ == "__main__":
