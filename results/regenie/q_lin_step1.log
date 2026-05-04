@@ -1,4 +1,4 @@
-Start time: Tue Apr 28 18:24:07 2026
+Start time: Mon May  4 12:44:15 2026
 
               |===========================|
               |      REGENIE v3.4.gz      |
@@ -40,29 +40,29 @@ Fitting null model
 
 Chromosome 15
  block [1] : 1000 snps  (28ms) 
-   -residualizing and scaling genotypes...done (16ms) 
-   -calc working matrices...done (460ms) 
-   -calc level 0 ridge...done (4495ms) 
- block [2] : 1000 snps  (33ms) 
    -residualizing and scaling genotypes...done (15ms) 
-   -calc working matrices...done (438ms) 
-   -calc level 0 ridge...done (3594ms) 
- block [3] : 1000 snps  (26ms) 
+   -calc working matrices...done (452ms) 
+   -calc level 0 ridge...done (3811ms) 
+ block [2] : 1000 snps  (28ms) 
+   -residualizing and scaling genotypes...done (10ms) 
+   -calc working matrices...done (420ms) 
+   -calc level 0 ridge...done (3589ms) 
+ block [3] : 1000 snps  (27ms) 
    -residualizing and scaling genotypes...done (8ms) 
    -calc working matrices...done (418ms) 
-   -calc level 0 ridge...done (3340ms) 
- block [4] : 1000 snps  (26ms) 
-   -residualizing and scaling genotypes...done (9ms) 
-   -calc working matrices...done (432ms) 
-   -calc level 0 ridge...done (3857ms) 
- block [5] : 1000 snps  (30ms) 
-   -residualizing and scaling genotypes...done (11ms) 
-   -calc working matrices...done (441ms) 
-   -calc level 0 ridge...done (3715ms) 
- block [6] : 233 snps  (6ms) 
+   -calc level 0 ridge...done (3338ms) 
+ block [4] : 1000 snps  (27ms) 
+   -residualizing and scaling genotypes...done (8ms) 
+   -calc working matrices...done (418ms) 
+   -calc level 0 ridge...done (3780ms) 
+ block [5] : 1000 snps  (27ms) 
+   -residualizing and scaling genotypes...done (8ms) 
+   -calc working matrices...done (417ms) 
+   -calc level 0 ridge...done (3669ms) 
+ block [6] : 233 snps  (5ms) 
    -residualizing and scaling genotypes...done (1ms) 
-   -calc working matrices...done (25ms) 
-   -calc level 0 ridge...done (57ms) 
+   -calc working matrices...done (76ms) 
+   -calc level 0 ridge...done (60ms) 
 
  Level 1 ridge...
    -on phenotype 1 (Phenotype_1)...done (1ms) 
@@ -70,15 +70,15 @@ Chromosome 15
 Output
 ------
 phenotype 1 (Phenotype_1) : 
-  0.01  : Rsq = 0.639206, MSE = 0.398856
-  0.25  : Rsq = 0.663159, MSE = 0.336729
-  0.5   : Rsq = 0.664063, MSE = 0.335822
-  0.75  : Rsq = 0.664463, MSE = 0.335477<- min value
-  0.99  : Rsq = 0.663994, MSE = 0.336048
-  * making predictions...writing LOCO predictions...done (41ms) 
+  0.01  : Rsq = 0.570214, MSE = 0.46044
+  0.25  : Rsq = 0.620373, MSE = 0.3796
+  0.5   : Rsq = 0.624089, MSE = 0.37578
+  0.75  : Rsq = 0.625632, MSE = 0.374275
+  0.99  : Rsq = 0.625807, MSE = 0.374257<- min value
+  * making predictions...writing LOCO predictions...done (43ms) 
 
 List of blup files written to: [results/regenie/q_lin_step1_pred.list]
 
-Elapsed time : 21.6018s
-End time: Tue Apr 28 18:24:28 2026
+Elapsed time : 20.7519s
+End time: Mon May  4 12:44:35 2026
 

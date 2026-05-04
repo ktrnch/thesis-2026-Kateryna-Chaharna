@@ -5,6 +5,7 @@
 # This function compares them with the ones that are in the file with true causal SNPs
 
 import pandas as pd
+import numpy as np
 
 def extract_p_values(step2_output):
     # Read the step2 output file
@@ -16,30 +17,34 @@ def extract_p_values(step2_output):
     # Convert log10p to p-values
     snp_log10p_values['P_VALUE'] = 10 ** (-snp_log10p_values['LOG10P'])
     snp_p_values = snp_log10p_values[['ID', 'P_VALUE']]
+    total_num_snps = len(snp_p_values)  
 
-    return snp_p_values
+    return snp_p_values, total_num_snps
 
 def identify_causal_snps(snp_p_values, p_value_threshold):
     # Identify causal SNPs based on the p-value threshold
     causal_snps = snp_p_values[snp_p_values['P_VALUE'] < p_value_threshold]['ID'].tolist()
     return causal_snps
 
-def compare_causal_snps(identified_causal_snps, true_causal_snps_file):
+def compare_causal_snps(identified_causal_snps, true_causal_snps_file, total_num_snps):
     # Read the true causal SNPs from the file
     true_causal_snps_df = pd.read_csv(true_causal_snps_file, sep='\t', header=None)
     # First row is list of causal SNPs without the first column, so we take the first row and convert it to a list
     true_causal_snps = true_causal_snps_df.iloc[0, 1:].dropna().tolist()  # Skip the first column which is not a SNP, drop NaN for empty
     #print(f"True Causal SNPs: {true_causal_snps}")  # Print the true causal SNPs for verification 
     # Compare identified causal SNPs with true causal SNPs
-    true_positives = set(identified_causal_snps) & set(true_causal_snps)
+    true_positives = set(identified_causal_snps) & set(true_causal_snps)  
     false_positives = set(identified_causal_snps) - set(true_causal_snps)
     false_negatives = set(true_causal_snps) - set(identified_causal_snps)
+    true_negatives = total_num_snps - len(true_positives) - len(false_positives) - len(false_negatives)  # Total SNPs minus the ones we identified as causal or missed
 
-    return true_positives, false_positives, false_negatives
+
+    return true_positives, false_positives, false_negatives, true_negatives
 
 def extract_prefix_from_filename(filename):
     prefix = filename.split('.')[0] # Remove the file extension
     prefix = prefix.split('/')[-1] # Get the last part of the path, which is the filename without extension
+    prefix = prefix.replace('_step2_Phenotype_1', '') # Remove the specific suffix to get the condition name
     return prefix
 
 
@@ -52,7 +57,7 @@ step2_additive_outputs = ['results/regenie/addit2/addit2_step2_Phenotype_1.regen
                           'results/regenie/addit2nd3/addit2nd3_step2_Phenotype_1.regenie',
                           'results/regenie/addit2nd3_ld/addit2nd3_ld_step2_Phenotype_1.regenie']
 
-p_value_threshold = 0.05  # Threshold for identifying causal SNPs
+p_value_threshold = 5e-8  # Threshold for identifying causal SNPs
 #list of paths to the files containing true causal SNPs for each phenotype, in the same order as the step2 output files
 
 true_causal_snps_files = ['data/runs/b_lin_ld/b_lin_ld_SNP_ASSIGNMENTS.txt', 'data/runs/b_lin/b_lin_SNP_ASSIGNMENTS.txt',
@@ -66,14 +71,15 @@ def main():
     for step2_output, true_causal_snps_file in zip(step2_linear_outputs + step2_additive_outputs, true_causal_snps_files):
         print(f"Processing file: {step2_output}")
         try:
-            snp_p_values = extract_p_values(step2_output)
+            snp_p_values, total_num_snps = extract_p_values(step2_output)
             identified_causal_snps = identify_causal_snps(snp_p_values, p_value_threshold)
-            true_positives, false_positives, false_negatives = compare_causal_snps(identified_causal_snps, true_causal_snps_file)
+            true_positives, false_positives, false_negatives, true_negatives = compare_causal_snps(identified_causal_snps, true_causal_snps_file, total_num_snps)
             prefix = extract_prefix_from_filename(step2_output)
             results_list.append({ 
                 'Conditions': prefix,
                 "True Positives" :len(true_positives),
-                "False Positives": len(false_positives), 
+                "False Positives": len(false_positives),
+                "True Negatives": true_negatives, 
                 "False Negatives": len(false_negatives),
                 "True Causal SNPs": len(true_positives) + len(false_negatives)   
             })

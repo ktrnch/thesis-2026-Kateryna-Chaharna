@@ -115,13 +115,13 @@ def simulate(
     first6 = hdr[:6]       # FID, IID, PAT, MAT, SEX, PHENOTYPE
     all_snp_cols = hdr[6:] # all genotype columns
 
-    ld_map = {}
+    proximity_map = {}
     # If LD=True
     if ld_mode:
         snp_metadata = chromosome_metadata(all_snp_cols, chromosome_file)
-        ld_map = find_ld_pairs(snp_metadata, ld_threshold)
+        proximity_map = find_ld_pairs(snp_metadata, ld_threshold)
 
-    # If user specified causal SNP names, we can selectively read just those (plus any interaction/dom/rec names).
+    # If user specified causal SNP names, we can selectively read just t    hose (plus any interaction/dom/rec names).
     if specific_causal:
         miss = [s for s in specific_causal if s not in all_snp_cols]
         if miss:
@@ -242,11 +242,19 @@ def simulate(
         w_int = np.random.normal(0,1,n_snps) if separate_interaction_weights else w_lin
         weights_linear, weights_inter = w_lin, w_int
 
+    # ommit snps that are in LD with selected ones from the pool
+    if proximity_map:
+        linked_snps = set()
+        for s in causal_pool:
+            if s in proximity_map:
+                linked_snps.update(proximity_map[s])
+        causal_pool = [s for s in causal_pool if s not in linked_snps]     
+
     # ---------------- choose causal SNPs per phenotype ----------------
     # If force_defined_interactions=True, we include *all* defined initiators + their counterparts in each phenotype.
     # Otherwise, we randomly choose up to `int_var_max` initiators (and include their pairs), then fill with random SNPs.
     #account for ld
-    def pick_pheno_snps(force_defined: bool, ld_map):
+    def pick_pheno_snps(force_defined: bool,):
         out = []
         forced_inits = set(init2 + init3)
         forced_pairs = set(pair2 + b3 + c3)
@@ -269,22 +277,23 @@ def simulate(
 
             used = set(sel_inits) | pair_set
 
-            if ld_map:
-                to_check = list(used)
-                for i in range(len(to_check)):
-                    snp = to_check[i]
-                    if snp in ld_map:
-                        for linked_snp in ld_map[snp]:
-                            if linked_snp in causal_pool and linked_snp not in used:
-                                used.add(linked_snp)
-                                to_check.append(linked_snp)
+            # if proximity_map:
+            #     to_check = list(used)
+            #     for i in range(len(to_check)):
+            #         snp = to_check[i]
+            #         if snp in proximity_map:
+            #             for linked_snp in proximity_map[snp]:
+            #                 if linked_snp in causal_pool and linked_snp not in used:
+            #                     used.add(linked_snp)
+            #                     to_check.append(linked_snp)
+
             remaining = [s for s in causal_pool if s not in used]
             need = max(0, k - len(used))
             picked_rest = remaining if need >= len(remaining) else random.sample(remaining, need)
             out.append(sorted(list(used) + picked_rest))
         return out
 
-    phenotype_snps = pick_pheno_snps(force_defined=force_defined_interactions, ld_map=ld_map)
+    phenotype_snps = pick_pheno_snps(force_defined=force_defined_interactions,)
 
     # ---------------- build genetic component G (P x N) ----------------
     # For each phenotype:
@@ -392,7 +401,7 @@ def simulate(
     df_w  = pd.DataFrame(G_with_noise.T, columns=pheno_labels)
     df_f  = pd.DataFrame(F.T, columns=pheno_labels)
     for d in (df_wo, df_w, df_f):
-        d.insert(0, "FID", fids)
+        d.insert(0, "FID", iids)
         d.insert(1, "IID", iids)
 
     # ---------------- write files ----------------

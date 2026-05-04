@@ -1,9 +1,9 @@
-Conditions,True Positives,False Positives,False Negatives,True Causal SNPs
-b_lin_ld_step2_Phenotype_1,44,4577,56,100
-b_lin_step2_Phenotype_1,44,4577,56,100
-q_lin_ld_step2_Phenotype_1,9,1905,11,20
-q_lin_step2_Phenotype_1,9,1905,11,20
-addit2_step2_Phenotype_1,13,3156,7,20
-addit2_ld_step2_Phenotype_1,13,3156,7,20
-addit2nd3_step2_Phenotype_1,11,4054,9,20
-addit2nd3_ld_step2_Phenotype_1,11,4054,9,20
+Conditions,True Positives,False Positives,True Negatives,False Negatives,True Causal SNPs
+b_lin_ld,5,730,4488,10,15
+b_lin,5,730,4488,10,15
+q_lin_ld,6,877,4341,9,15
+q_lin,6,877,4341,9,15
+addit2,9,864,4349,11,20
+addit2_ld,9,864,4349,11,20
+addit2nd3,7,2139,3074,13,20
+addit2nd3_ld,7,2139,3074,13,20

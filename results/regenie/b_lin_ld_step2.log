@@ -1,4 +1,4 @@
-Start time: Thu Apr 30 17:02:22 2026
+Start time: Mon May  4 12:47:56 2026
 
               |===========================|
               |      REGENIE v3.4.gz      |
@@ -40,19 +40,19 @@ Association testing mode
 
 Chromosome 15 [6 blocks in total]
    -reading loco predictions for the chromosome...done (3ms) 
-   -fitting null logistic regression on binary phenotypes...done (1ms) 
- block [1/6] : done (614ms) 
- block [2/6] : done (628ms) 
- block [3/6] : done (593ms) 
- block [4/6] : done (603ms) 
- block [5/6] : done (593ms) 
- block [6/6] : done (140ms) 
+   -fitting null logistic regression on binary phenotypes...done (2ms) 
+ block [1/6] : done (606ms) 
+ block [2/6] : done (582ms) 
+ block [3/6] : done (580ms) 
+ block [4/6] : done (579ms) 
+ block [5/6] : done (610ms) 
+ block [6/6] : done (139ms) 
 
 Association results stored separately for each trait in files : 
 * [results/regenie/b_lin_ld_step2_Phenotype_1.regenie]
 
 Number of ignored tests due to low MAC : 0
 
-Elapsed time : 3.27362s
-End time: Thu Apr 30 17:02:25 2026
+Elapsed time : 3.20242s
+End time: Mon May  4 12:47:59 2026
 
