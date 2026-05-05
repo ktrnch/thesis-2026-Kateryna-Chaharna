@@ -202,10 +202,10 @@ def simulate(
         required_for_interactions = second_inter_num * 2 + third_inter_num * 3
 
         if len(causal_pool) < required_for_interactions:
-        raise ValueError(
+            raise ValueError(
         "LD pruning left fewer SNPs than required for the requested interactions. "
         "Use fewer interactions, a larger causal_var_pool_num, or a smaller ld_threshold."
-        )
+            )
     
     # Submatrix of the causal pool only
     df_causal = geno.loc[causal_pool, :]
