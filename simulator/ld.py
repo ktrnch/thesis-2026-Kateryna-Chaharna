@@ -2,18 +2,23 @@ import pandas as pd
 from typing import Dict, List
 
 def chromosome_metadata(snp_ids, chromosome_file):
+    if chromosome_file is None:
+        raise ValueError("chromosome_file is required when ld_mode=True")
+
     chromosome_data = pd.read_csv(chromosome_file, sep="\t", header=None)
     chromosome_data.columns = ["SNP", "CHR", "POS"]
-    chromosome_data = chromosome_data[chromosome_data["SNP"].isin(snp_ids)]
+    chromosome_data = chromosome_data[chromosome_data["SNP"].isin(snp_ids)].copy()
+    chromosome_data["POS"] = pd.to_numeric(chromosome_data["POS"], errors="coerce")
+
     return chromosome_data
 
 
 def find_ld_pairs(positional_data: pd.DataFrame, ld_threshold: int) -> Dict[str, List[str]]:
     """
-    Identifies pairs of SNPs that are in Linkage Disequilibrium (LD)
-    based on chromosome and physical distance.
-    Returns a dictionary where keys are SNPs and values are lists of other
-    SNPs they are in LD with.
+    Identifies SNP pairs that are close on the same chromosome.
+    Here LD is approximated by physical distance <= ld_threshold.
+    Returns:
+        {snp: [nearby_snp_1, nearby_snp_2, ...]}
     """
     ld_map = {}
     valid_snps = positional_data.dropna(subset=['CHR', 'POS'])
@@ -34,8 +39,7 @@ def find_ld_pairs(positional_data: pd.DataFrame, ld_threshold: int) -> Dict[str,
             snp_i = snps_in_chrom[i]
             pos_i = int(positions[i])
 
-            if snp_i not in ld_map:
-                ld_map[snp_i] = []
+            ld_map.setdefault(snp_i, [])
 
             # Check following SNPs in the same chromosome
             for j in range(i + 1, len(snps_in_chrom)):
@@ -43,9 +47,9 @@ def find_ld_pairs(positional_data: pd.DataFrame, ld_threshold: int) -> Dict[str,
                 pos_j = int(positions[j])
 
                 if abs(pos_i - pos_j) <= ld_threshold:
+                    ld_map.setdefault(snp_j, [])
+
                     ld_map[snp_i].append(snp_j)
-                    if snp_j not in ld_map:
-                        ld_map[snp_j] = []
                     ld_map[snp_j].append(snp_i)
                 else:
                     # Since the group is sorted by position, if the distance
@@ -54,6 +58,6 @@ def find_ld_pairs(positional_data: pd.DataFrame, ld_threshold: int) -> Dict[str,
 
     # Remove duplicates from the lists and sort for consistency
     for snp, linked_snps in ld_map.items():
-        ld_map[snp] = sorted(list(set(linked_snps)))
+        ld_map[snp] = sorted(set(linked_snps))
 
     return ld_map
