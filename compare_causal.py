@@ -6,6 +6,7 @@
 
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 
 def extract_p_values(step2_output):
     # Read the step2 output file
@@ -20,6 +21,25 @@ def extract_p_values(step2_output):
     total_num_snps = len(snp_p_values)  
 
     return snp_p_values, total_num_snps
+
+def make_manchetan_plot(step2_output, output_path, true_causal_snps_file):
+    df = pd.read_csv(step2_output, sep=' ')
+    cusals = pd.read_csv(true_causal_snps_file, sep='\t', header=None)
+    true_causal_snps = cusals.iloc[0, 1:].dropna().tolist()  # Skip the first column which is not a SNP, drop NaN for empty
+    df['-log10(P_VALUE)'] = (df['LOG10P'])
+    #make causal SNPs different colour in the plot
+    df['color'] = df['ID'].apply(lambda x: 'yellow' if x in true_causal_snps else 'blue')
+    plt.figure(figsize=(10, 6))
+    plt.scatter(df['ID'], df['-log10(P_VALUE)'], color=df['color'], s=10)
+    plt.axhline(y=-np.log10(5e-8), color='red', linestyle='--')  # Add a horizontal line for the significance threshold
+    plt.xlabel('SNP ID')
+    plt.ylabel('-log10(P_VALUE)')
+    plt.title('Manhattan Plot')
+    plt.tight_layout()
+    plt.savefig(output_path)
+    plt.close() 
+
+    
 
 def identify_causal_snps(snp_p_values, p_value_threshold):
     # Identify causal SNPs based on the p-value threshold
@@ -52,29 +72,22 @@ def extract_prefix_from_filename(filename):
 step2_linear_outputs = ['results/regenie/b_lin_ld_step2_Phenotype_1.regenie', 'results/regenie/b_lin_step2_Phenotype_1.regenie',
                  'results/regenie/q_lin_ld_step2_Phenotype_1.regenie', 'results/regenie/q_lin_step2_Phenotype_1.regenie' ]  
 
-step2_additive_outputs = ['results/regenie/addit2/addit2_step2_Phenotype_1.regenie',
-                          'results/regenie/addit2_ld/addit2_ld_step2_Phenotype_1.regenie', 
-                          'results/regenie/addit2nd3/addit2nd3_step2_Phenotype_1.regenie',
-                          'results/regenie/addit2nd3_ld/addit2nd3_ld_step2_Phenotype_1.regenie']
 
 p_value_threshold = 5e-8  # Threshold for identifying causal SNPs
 #list of paths to the files containing true causal SNPs for each phenotype, in the same order as the step2 output files
 
 true_causal_snps_files = ['data/runs/b_lin_ld/b_lin_ld_SNP_ASSIGNMENTS.txt', 'data/runs/b_lin/b_lin_SNP_ASSIGNMENTS.txt',
-                          'data/runs/q_lin_ld/q_lin_ld_SNP_ASSIGNMENTS.txt', 'data/runs/q_lin/q_lin_SNP_ASSIGNMENTS.txt',
-                          'data/runs/addit2/addit2_SNP_ASSIGNMENTS.txt', 'data/runs/addit2_ld/addit2_ld_SNP_ASSIGNMENTS.txt',
-                          'data/runs/addit2nd3/addit2nd3_SNP_ASSIGNMENTS.txt', 'data/runs/addit2nd3_ld/addit2nd3_ld_SNP_ASSIGNMENTS.txt']
-
-
+                          'data/runs/q_lin_ld/q_lin_ld_SNP_ASSIGNMENTS.txt', 'data/runs/q_lin/q_lin_SNP_ASSIGNMENTS.txt']
 def main():
     results_list  = []
-    for step2_output, true_causal_snps_file in zip(step2_linear_outputs + step2_additive_outputs, true_causal_snps_files):
+    for step2_output, true_causal_snps_file in zip(step2_linear_outputs, true_causal_snps_files):
         print(f"Processing file: {step2_output}")
         try:
             snp_p_values, total_num_snps = extract_p_values(step2_output)
             identified_causal_snps = identify_causal_snps(snp_p_values, p_value_threshold)
             true_positives, false_positives, false_negatives, true_negatives = compare_causal_snps(identified_causal_snps, true_causal_snps_file, total_num_snps)
             prefix = extract_prefix_from_filename(step2_output)
+            make_manchetan_plot(step2_output, f"results/manchetan_plots/{prefix}_manchetan_plot.png", true_causal_snps_file)
             results_list.append({ 
                 'Conditions': prefix,
                 "True Positives" :len(true_positives),

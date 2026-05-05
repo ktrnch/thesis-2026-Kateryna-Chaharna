@@ -1,4 +1,4 @@
-Start time: Mon May  4 12:33:58 2026
+Start time: Tue May  5 16:08:46 2026
 
               |===========================|
               |      REGENIE v3.4.gz      |
@@ -28,7 +28,7 @@ Fitting null model
  * number of individuals used in analysis = 2504
  * case-control counts for each trait:
    - 'Phenotype_1': 501 cases and 2003 controls
-   -fitting null logistic regression on binary phenotypes...done (1ms) 
+   -fitting null logistic regression on binary phenotypes...done (2ms) 
    -residualizing and scaling phenotypes...done (0ms) 
    -WARNING: Sample size is less than 5,000 so using LOOCV instead of 5-fold CV.
  * # threads        : [7]
@@ -41,33 +41,33 @@ Fitting null model
  * setting memory...done
 
 Chromosome 15
- block [1] : 1000 snps  (28ms) 
-   -residualizing and scaling genotypes...done (17ms) 
-   -calc working matrices...done (1210ms) 
-   -calc level 0 ridge...done (484ms) 
- block [2] : 1000 snps  (30ms) 
-   -residualizing and scaling genotypes...done (10ms) 
-   -calc working matrices...done (1182ms) 
-   -calc level 0 ridge...done (431ms) 
- block [3] : 1000 snps  (26ms) 
-   -residualizing and scaling genotypes...done (8ms) 
-   -calc working matrices...done (1127ms) 
-   -calc level 0 ridge...done (432ms) 
- block [4] : 1000 snps  (26ms) 
-   -residualizing and scaling genotypes...done (8ms) 
-   -calc working matrices...done (1197ms) 
-   -calc level 0 ridge...done (436ms) 
- block [5] : 1000 snps  (26ms) 
-   -residualizing and scaling genotypes...done (8ms) 
-   -calc working matrices...done (1238ms) 
-   -calc level 0 ridge...done (430ms) 
- block [6] : 233 snps  (5ms) 
+ block [1] : 1000 snps  (19ms) 
+   -residualizing and scaling genotypes...done (13ms) 
+   -calc working matrices...done (744ms) 
+   -calc level 0 ridge...done (274ms) 
+ block [2] : 1000 snps  (16ms) 
+   -residualizing and scaling genotypes...done (6ms) 
+   -calc working matrices...done (733ms) 
+   -calc level 0 ridge...done (263ms) 
+ block [3] : 1000 snps  (16ms) 
+   -residualizing and scaling genotypes...done (6ms) 
+   -calc working matrices...done (688ms) 
+   -calc level 0 ridge...done (262ms) 
+ block [4] : 1000 snps  (16ms) 
+   -residualizing and scaling genotypes...done (5ms) 
+   -calc working matrices...done (750ms) 
+   -calc level 0 ridge...done (265ms) 
+ block [5] : 1000 snps  (16ms) 
+   -residualizing and scaling genotypes...done (6ms) 
+   -calc working matrices...done (723ms) 
+   -calc level 0 ridge...done (263ms) 
+ block [6] : 233 snps  (3ms) 
    -residualizing and scaling genotypes...done (1ms) 
-   -calc working matrices...done (34ms) 
-   -calc level 0 ridge...done (27ms) 
+   -calc working matrices...done (21ms) 
+   -calc level 0 ridge...done (17ms) 
 
  Level 1 ridge with logistic regression...
-   -on phenotype 1 (Phenotype_1)...done (21ms) 
+   -on phenotype 1 (Phenotype_1)...done (14ms) 
 
 Output
 ------
@@ -77,10 +77,10 @@ phenotype 1 (Phenotype_1) :
   0.5   : Rsq = 0.510742, MSE = 0.0856299, -logLik/N = 0.291102
   0.75  : Rsq = 0.513086, MSE = 0.0854973, -logLik/N = 0.290138
   0.99  : Rsq = 0.51597, MSE = 0.0853161, -logLik/N = 0.289051<- min value
-  * making predictions...writing LOCO predictions...done (42ms) 
+  * making predictions...writing LOCO predictions...done (27ms) 
 
 List of blup files written to: [results/regenie/b_lin_ld_step1_pred.list]
 
-Elapsed time : 8.55623s
-End time: Mon May  4 12:34:06 2026
+Elapsed time : 5.22262s
+End time: Tue May  5 16:08:51 2026
 

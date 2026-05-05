@@ -9,7 +9,7 @@
   "causal_var_max": 15,
   "causal_snps": null,
   "ld_mode": true,
-  "ld_threshold": 1000,
+  "ld_threshold": 10000,
   "chromosome_file": "data/10K_SNP_1000G_real.snpinfo.tsv",
   "second_inter_num": 0,
   "third_inter_num": 0,
