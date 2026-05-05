@@ -61,3 +61,38 @@ def find_ld_pairs(positional_data: pd.DataFrame, ld_threshold: int) -> Dict[str,
         ld_map[snp] = sorted(set(linked_snps))
 
     return ld_map
+
+
+def prune_snps_by_ld(
+    snps: List[str],
+    ld_map: Dict[str, List[str]],
+    protected_snps: Set[str] | None = None
+) -> List[str]:
+    """
+    Greedy LD pruning.
+
+    Keeps one SNP from each local LD/proximity group.
+    SNPs in protected_snps are kept whenever possible.
+    """
+    protected_snps = protected_snps or set()
+
+    kept = []
+    removed = set()
+
+    # Put protected SNPs first so user-defined SNPs are kept preferentially
+    ordered_snps = (
+        [s for s in snps if s in protected_snps]
+        + [s for s in snps if s not in protected_snps]
+    )
+
+    for snp in ordered_snps:
+        if snp in removed:
+            continue
+
+        kept.append(snp)
+
+        for linked_snp in ld_map.get(snp, []):
+            if linked_snp not in protected_snps:
+                removed.add(linked_snp)
+
+    return kept
