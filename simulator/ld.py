@@ -1,5 +1,5 @@
+from typing import Dict, List, Optional, Set
 import pandas as pd
-from typing import Dict, List
 
 def chromosome_metadata(snp_ids, chromosome_file):
     if chromosome_file is None:
@@ -66,20 +66,21 @@ def find_ld_pairs(positional_data: pd.DataFrame, ld_threshold: int) -> Dict[str,
 def prune_snps_by_ld(
     snps: List[str],
     ld_map: Dict[str, List[str]],
-    protected_snps: Set[str] | None = None
+    protected_snps: Optional[Set[str]] = None
 ) -> List[str]:
     """
     Greedy LD pruning.
 
-    Keeps one SNP from each local LD/proximity group.
-    SNPs in protected_snps are kept whenever possible.
+    Keeps one SNP from each LD/proximity group.
+    SNPs in protected_snps are kept preferentially.
     """
-    protected_snps = protected_snps or set()
+    if protected_snps is None:
+        protected_snps = set()
 
     kept = []
     removed = set()
 
-    # Put protected SNPs first so user-defined SNPs are kept preferentially
+    # Protected SNPs first, so user-defined SNPs are kept preferentially.
     ordered_snps = (
         [s for s in snps if s in protected_snps]
         + [s for s in snps if s not in protected_snps]
