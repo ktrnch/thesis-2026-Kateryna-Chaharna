@@ -250,6 +250,7 @@ def simulate(
                 linked_snps.update(proximity_map[s])
         causal_pool = [s for s in causal_pool if s not in linked_snps]     
 
+
     # ---------------- choose causal SNPs per phenotype ----------------
     # If force_defined_interactions=True, we include *all* defined initiators + their counterparts in each phenotype.
     # Otherwise, we randomly choose up to `int_var_max` initiators (and include their pairs), then fill with random SNPs.
@@ -337,10 +338,10 @@ def simulate(
             # Dominant/Recessive encodings override the usual genotype*x form
             add_linear = True
             if s in dominant_pos:
-                sums += (x >= 1).astype(float) * w_lin
+                sums += (x >= 0).astype(float) * w_lin
                 add_linear = False
             elif s in recessive_pos:
-                sums += (x == 2).astype(float) * w_lin
+                sums += (x == 1).astype(float) * w_lin
                 add_linear = False
 
             # Interaction term (if this SNP is an initiator and we precomputed a vector for it)
