@@ -12,7 +12,7 @@ from simulator.sampling import (
     sample_without, split_second, split_third,
 )
 from simulator.io_utils import load_raw_header, selective_read_raw, full_read_raw
-from simulator.ld import chromosome_metadata, find_ld_pairs
+from simulator.ld import chromosome_metadata, find_ld_pairs, prune_snps_by_ld
 from simulator.transformer import recode_to_minus101
 
 def simulate(
@@ -116,8 +116,14 @@ def simulate(
     all_snp_cols = hdr[6:] # all genotype columns
 
     proximity_map = {}
-    # If LD=True
+
     if ld_mode:
+        if chromosome_file is None:
+            raise ValueError("chromosome_file is required when ld_mode=True")
+
+        if ld_threshold is None or ld_threshold < 0:
+            raise ValueError("ld_threshold must be a non-negative integer")
+
         snp_metadata = chromosome_metadata(all_snp_cols, chromosome_file)
         proximity_map = find_ld_pairs(snp_metadata, ld_threshold)
 
@@ -169,6 +175,38 @@ def simulate(
         causal_pool = random.sample(all_snp_names, min(causal_var_pool_num, len(all_snp_names)))
     causal_pool = sorted(causal_pool)
 
+    # Apply LD pruning BEFORE building df_causal, X, weights, and SNP-row mappings.
+    # This keeps the genotype matrix and the reported causal pool consistent.
+    if proximity_map:
+        protected_snps = (
+            set(specific_causal)
+            | set(second_list)
+            | set(third_list)
+            | set(dom_list)
+            | set(rec_list)
+        )
+
+        causal_pool = prune_snps_by_ld(
+            causal_pool,
+            proximity_map,
+            protected_snps=protected_snps
+        )
+
+        if len(causal_pool) < causal_var_max:
+            raise ValueError(
+                "LD pruning left fewer SNPs than causal_var_max. "
+                "Use a smaller causal_var_max, a larger causal_var_pool_num, "
+                "or a smaller ld_threshold."
+            )
+
+        required_for_interactions = second_inter_num * 2 + third_inter_num * 3
+
+        if len(causal_pool) < required_for_interactions:
+        raise ValueError(
+        "LD pruning left fewer SNPs than required for the requested interactions. "
+        "Use fewer interactions, a larger causal_var_pool_num, or a smaller ld_threshold."
+        )
+    
     # Submatrix of the causal pool only
     df_causal = geno.loc[causal_pool, :]
     X = df_causal.to_numpy()       # rows=SNPs, cols=individuals
@@ -241,15 +279,6 @@ def simulate(
         w_lin = np.random.normal(0,1,n_snps)
         w_int = np.random.normal(0,1,n_snps) if separate_interaction_weights else w_lin
         weights_linear, weights_inter = w_lin, w_int
-
-    # ommit snps that are in LD with selected ones from the pool
-    if proximity_map:
-        linked_snps = set()
-        for s in causal_pool:
-            if s in proximity_map:
-                linked_snps.update(proximity_map[s])
-        causal_pool = [s for s in causal_pool if s not in linked_snps]     
-
 
     # ---------------- choose causal SNPs per phenotype ----------------
     # If force_defined_interactions=True, we include *all* defined initiators + their counterparts in each phenotype.
