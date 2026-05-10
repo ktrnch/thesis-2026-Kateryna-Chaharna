@@ -1,0 +1,8 @@
+Causal_Positions	15:27491707_G_A	15:27592890_G_A	15:27726971_G_A	15:27852926_G_A	15:27968498_C_T	15:28071732_C_T	15:28179879_T_C	15:28299454_G_A	15:28438482_T_C	15:28962131_G_A	15:29081173_G_A	15:29227452_C_T	15:29338502_C_T	15:29445035_T_C	15:29551110_C_T
+Init_Second_Order	
+Second_Second_Order	
+Init_Third_Order	
+Second_Third_Order	
+Third_Third_Order	
+Dominant_Positions	
+Recessive_Positions	

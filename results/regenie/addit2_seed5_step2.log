@@ -1,0 +1,26 @@
+Start time: Sun May 10 18:28:46 2026
+
+              |===========================|
+              |      REGENIE v3.4.gz      |
+              |===========================|
+
+Copyright (c) 2020-2023 Joelle Mbatchou, Andrey Ziyatdinov and Jonathan Marchini.
+Distributed under the MIT License.
+Compiled with Boost Iostream library.
+
+Log of output saved in file : results/regenie/addit2_seed5_step2.log
+
+Options in effect:
+  --step 2 \
+  --bgen data_for_regenie/data_step2_filtered.bgen \
+  --sample data_for_regenie/data_step2_filtered.sample \
+  --phenoFile data/runs/addit2_seed5/final_phenotype.txt \
+  --bsize 1000 \
+  --pred results/regenie/addit2_seed5_step1_pred.list \
+  --out results/regenie/addit2_seed5_step2
+
+Association testing mode
+ * bgen             : [data_for_regenie/data_step2_filtered.bgen]
+   -summary : bgen file (v1.2 layout, zlib compressed) with 2504 named samples and 5233 variants with 16-bit encoding.
+   -sample file: data_for_regenie/data_step2_filtered.sample
+ * phenotypes       : [data/runs/addit2_seed5/final_phenotype.txt] ERROR: cannot read file : results/regenie/addit2_seed5_step1_pred.list

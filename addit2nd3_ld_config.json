@@ -1,10 +1,12 @@
 {
+  "output_prefix": "addit2nd3_ld_seed7",
   "seed": 7,
   "phenotype_type": "quantitative",
   "phenotype_number": 1,
-  "causal_var_pool_num": 20,
-  "causal_var_min": 20,
-  "causal_var_max": 20,
+  "n_indiv_max": null,
+  "causal_var_pool_num": 100,
+  "causal_var_min": 10,
+  "causal_var_max": 15,
   "causal_snps": null,
   "ld_mode": true,
   "ld_threshold": 100000,
@@ -17,14 +19,10 @@
   "interactions_mode": "additive",
   "separate_interaction_weights": false,
   "interaction_weight_scale": 1.0,
+  "force_defined_interactions": false,
   "target_h2": 0.8,
   "noise_factor": 0.0,
-  "quant_range": [
-    0.0,
-    1.0
-  ],
-  "percentile_or_threshold": 80.0,
-  "force_defined_interactions": false,
-  "n_individuals": 2504,
-  "n_causal_pool": 20
+  "quant_range_min": 0.0,
+  "quant_range_max": 1.0,
+  "percentile_or_threshold": 80.0
 }

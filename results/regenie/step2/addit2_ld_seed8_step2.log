@@ -1,0 +1,58 @@
+Start time: Sun May 10 20:44:07 2026
+
+              |===========================|
+              |      REGENIE v3.4.gz      |
+              |===========================|
+
+Copyright (c) 2020-2023 Joelle Mbatchou, Andrey Ziyatdinov and Jonathan Marchini.
+Distributed under the MIT License.
+Compiled with Boost Iostream library.
+
+Log of output saved in file : results/regenie/step2/addit2_ld_seed8_step2.log
+
+Options in effect:
+  --step 2 \
+  --bgen data_for_regenie/data_step2_filtered.bgen \
+  --sample data_for_regenie/data_step2_filtered.sample \
+  --phenoFile data/runs/addit2_ld_seed8/final_phenotype.txt \
+  --qt \
+  --bsize 1000 \
+  --pred results/regenie/addit2_ld_seed8_step1_pred.list \
+  --out results/regenie/step2/addit2_ld_seed8_step2
+
+Association testing mode
+ * bgen             : [data_for_regenie/data_step2_filtered.bgen]
+   -summary : bgen file (v1.2 layout, zlib compressed) with 2504 named samples and 5233 variants with 16-bit encoding.
+   -sample file: data_for_regenie/data_step2_filtered.sample
+ * phenotypes       : [data/runs/addit2_ld_seed8/final_phenotype.txt] n_pheno = 1
+   -dropping observations with missing values at any of the phenotypes
+   -number of phenotyped individuals with no missing data = 2504
+ * number of individuals used in analysis = 2504
+ * number of observations for each trait:
+   - 'Phenotype_1': 2504 observations
+ * LOCO predictions : [results/regenie/addit2_ld_seed8_step1_pred.list]
+   -file [/Users/katerynacagarna/Desktop/Thesis/Code_thesis/results/regenie/addit2_ld_seed8_step1_1.loco] for phenotype 'Phenotype_1'
+   -residualizing and scaling phenotypes...done (0ms) 
+ * # threads        : [7]
+ * block size       : [1000]
+ * # blocks         : [6]
+ * approximate memory usage : 40MB
+ * using minimum MAC of 5 (variants with lower MAC are ignored)
+
+Chromosome 15 [6 blocks in total]
+   -reading loco predictions for the chromosome...done (2ms) 
+ block [1/6] : done (362ms) 
+ block [2/6] : done (353ms) 
+ block [3/6] : done (349ms) 
+ block [4/6] : done (354ms) 
+ block [5/6] : done (348ms) 
+ block [6/6] : done (84ms) 
+
+Association results stored separately for each trait in files : 
+* [results/regenie/step2/addit2_ld_seed8_step2_Phenotype_1.regenie]
+
+Number of ignored tests due to low MAC : 0
+
+Elapsed time : 1.90607s
+End time: Sun May 10 20:44:09 2026
+
