@@ -1,4 +1,4 @@
-Start time: Tue May  5 16:09:12 2026
+Start time: Sun May 10 16:28:45 2026
 
               |===========================|
               |      REGENIE v3.4.gz      |
@@ -29,7 +29,7 @@ Association testing mode
    -number of phenotyped individuals with no missing data = 2504
  * number of individuals used in analysis = 2504
  * case-control counts for each trait:
-   - 'Phenotype_1': 501 cases and 2003 controls
+   - 'Phenotype_1': 496 cases and 2008 controls
  * LOCO predictions : [results/regenie/b_lin_ld_step1_pred.list]
    -file [/Users/katerynacagarna/Desktop/Thesis/Code_thesis/results/regenie/b_lin_ld_step1_1.loco] for phenotype 'Phenotype_1'
  * # threads        : [7]
@@ -39,20 +39,20 @@ Association testing mode
  * using minimum MAC of 5 (variants with lower MAC are ignored)
 
 Chromosome 15 [6 blocks in total]
-   -reading loco predictions for the chromosome...done (2ms) 
-   -fitting null logistic regression on binary phenotypes...done (1ms) 
- block [1/6] : done (358ms) 
- block [2/6] : done (347ms) 
- block [3/6] : done (348ms) 
- block [4/6] : done (358ms) 
- block [5/6] : done (347ms) 
- block [6/6] : done (83ms) 
+   -reading loco predictions for the chromosome...done (3ms) 
+   -fitting null logistic regression on binary phenotypes...done (0ms) 
+ block [1/6] : done (593ms) 
+ block [2/6] : done (576ms) 
+ block [3/6] : done (579ms) 
+ block [4/6] : done (578ms) 
+ block [5/6] : done (580ms) 
+ block [6/6] : done (136ms) 
 
 Association results stored separately for each trait in files : 
 * [results/regenie/b_lin_ld_step2_Phenotype_1.regenie]
 
 Number of ignored tests due to low MAC : 0
 
-Elapsed time : 1.91204s
-End time: Tue May  5 16:09:13 2026
+Elapsed time : 3.1309s
+End time: Sun May 10 16:28:48 2026
 

@@ -8,50 +8,45 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-def extract_p_values(step2_output):
-    # Read the step2 output file
-    df = pd.read_csv(step2_output, sep=' ')
-    #print(df.head())  # Print the first few rows to check the structure of the data
-    
-    # Extract the SNPs and their corresponding log10p
-    snp_log10p_values = df[['ID', 'LOG10P']].copy()
-    # Convert log10p to p-values
+def extract_data_from_files(file_names: list, p_value_threshold=5e-8):
+    step2_linear_outputs = []
+    true_causal_snps = []
+    for file_name in file_names:
+        if file_name.startswith('results/regenie'):
+            df = pd.read_csv(file_name, sep=r'\s+', engine='python')
+            step2_linear_outputs.append(df)
+        elif file_name.startswith('data/runs'):
+            df = pd.read_csv(file_name)
+            if 'Selected_SNPs' in df.columns:
+                selected = df['Selected_SNPs'].dropna().astype(str).tolist()
+                true_causal_snps.extend([snp.strip() for row in selected for snp in str(row).split(',') if snp.strip()])
+            else:
+                true_causal_snps.extend(df.iloc[:, 0].dropna().astype(str).tolist())
+    snp_log10p_values = step2_linear_outputs[0][['ID', 'LOG10P']].copy()
     snp_log10p_values['P_VALUE'] = 10 ** (-snp_log10p_values['LOG10P'])
     snp_p_values = snp_log10p_values[['ID', 'P_VALUE']]
-    total_num_snps = len(snp_p_values)  
+    identified_causal_snps = snp_p_values[snp_p_values['P_VALUE'] < p_value_threshold]['ID'].tolist()
+    total_num_snps = len(snp_p_values)
+    return true_causal_snps, identified_causal_snps, snp_log10p_values, snp_p_values, total_num_snps
 
-    return snp_p_values, total_num_snps
 
-def make_manchetan_plot(step2_output, output_path, true_causal_snps_file):
-    df = pd.read_csv(step2_output, sep=' ')
-    cusals = pd.read_csv(true_causal_snps_file, sep='\t', header=None)
-    true_causal_snps = cusals.iloc[0, 1:].dropna().tolist()  # Skip the first column which is not a SNP, drop NaN for empty
-    df['-log10(P_VALUE)'] = (df['LOG10P'])
-    #make causal SNPs different colour in the plot
-    df['color'] = df['ID'].apply(lambda x: 'yellow' if x in true_causal_snps else 'blue')
+def make_manchetan_plot(output_path, true_causal_snps, snp_log10p_values, p_value_threshold=5e-8):
+    df = snp_log10p_values.copy()
+    df['-log10(P_VALUE)'] = df['LOG10P']
+    df['color'] = df['ID'].apply(lambda x: 'red' if x in true_causal_snps else 'blue')
     plt.figure(figsize=(10, 6))
     plt.scatter(df['ID'], df['-log10(P_VALUE)'], color=df['color'], s=10)
-    plt.axhline(y=-np.log10(5e-8), color='red', linestyle='--')  # Add a horizontal line for the significance threshold
-    plt.xlabel('SNP ID')
+    plt.axhline(y=-np.log10(p_value_threshold), color='red', linestyle='--')  # Add a horizontal line for the significance threshold
+    plt.xlabel('Chromosome 15')
     plt.ylabel('-log10(P_VALUE)')
     plt.title('Manhattan Plot')
     plt.tight_layout()
     plt.savefig(output_path)
     plt.close() 
 
-    
 
-def identify_causal_snps(snp_p_values, p_value_threshold):
-    # Identify causal SNPs based on the p-value threshold
-    causal_snps = snp_p_values[snp_p_values['P_VALUE'] < p_value_threshold]['ID'].tolist()
-    return causal_snps
 
-def compare_causal_snps(identified_causal_snps, true_causal_snps_file, total_num_snps):
-    # Read the true causal SNPs from the file
-    true_causal_snps_df = pd.read_csv(true_causal_snps_file, sep='\t', header=None)
-    # First row is list of causal SNPs without the first column, so we take the first row and convert it to a list
-    true_causal_snps = true_causal_snps_df.iloc[0, 1:].dropna().tolist()  # Skip the first column which is not a SNP, drop NaN for empty
-    #print(f"True Causal SNPs: {true_causal_snps}")  # Print the true causal SNPs for verification 
+def compare_causal_snps(identified_causal_snps, true_causal_snps, total_num_snps):
     # Compare identified causal SNPs with true causal SNPs
     true_positives = set(identified_causal_snps) & set(true_causal_snps)  
     false_positives = set(identified_causal_snps) - set(true_causal_snps)
@@ -70,24 +65,25 @@ def extract_prefix_from_filename(filename):
 
 # Lists of paths to the step2 output files
 step2_linear_outputs = ['results/regenie/b_lin_ld_step2_Phenotype_1.regenie', 'results/regenie/b_lin_step2_Phenotype_1.regenie',
-                 'results/regenie/q_lin_ld_step2_Phenotype_1.regenie', 'results/regenie/q_lin_step2_Phenotype_1.regenie' ]  
+                 'results/regenie/q_lin_ld_step2_Phenotype_1.regenie', 'results/regenie/q_lin_step2_Phenotype_1.regenie',
+                  "results/regenie/addit2_step2_Phenotype_1.regenie", "results/regenie/addit2_ld_step2_Phenotype_1.regenie" ]  
 
 
 p_value_threshold = 5e-8  # Threshold for identifying causal SNPs
 #list of paths to the files containing true causal SNPs for each phenotype, in the same order as the step2 output files
 
-true_causal_snps_files = ['data/runs/b_lin_ld/b_lin_ld_SNP_ASSIGNMENTS.txt', 'data/runs/b_lin/b_lin_SNP_ASSIGNMENTS.txt',
-                          'data/runs/q_lin_ld/q_lin_ld_SNP_ASSIGNMENTS.txt', 'data/runs/q_lin/q_lin_SNP_ASSIGNMENTS.txt']
+true_causal_snps_files = ['data/runs/b_lin_ld/phenotype_snps.csv',
+                          'data/runs/b_lin/phenotype_snps.csv','data/runs/q_lin_ld/phenotype_snps.csv','data/runs/q_lin/phenotype_snps.csv',
+                          'data/runs/addit2/phenotype_snps.csv','data/runs/addit2_ld/phenotype_snps.csv']
 def main():
     results_list  = []
     for step2_output, true_causal_snps_file in zip(step2_linear_outputs, true_causal_snps_files):
         print(f"Processing file: {step2_output}")
         try:
-            snp_p_values, total_num_snps = extract_p_values(step2_output)
-            identified_causal_snps = identify_causal_snps(snp_p_values, p_value_threshold)
-            true_positives, false_positives, false_negatives, true_negatives = compare_causal_snps(identified_causal_snps, true_causal_snps_file, total_num_snps)
+            true_causal_snps, identified_causal_snps, snp_log10p_values, snp_p_values, total_num_snps = extract_data_from_files([step2_output, true_causal_snps_file])
+            true_positives, false_positives, false_negatives, true_negatives = compare_causal_snps(identified_causal_snps, true_causal_snps, total_num_snps)
             prefix = extract_prefix_from_filename(step2_output)
-            make_manchetan_plot(step2_output, f"results/manchetan_plots/{prefix}_manchetan_plot.png", true_causal_snps_file)
+            make_manchetan_plot(f"results/manchetan_plots/{prefix}_manchetan_plot.png", true_causal_snps, snp_log10p_values)
             results_list.append({ 
                 'Conditions': prefix,
                 "True Positives" :len(true_positives),

@@ -1,4 +1,4 @@
-Start time: Tue Apr 28 18:12:21 2026
+Start time: Sun May 10 16:22:16 2026
 
               |===========================|
               |      REGENIE v3.4.gz      |
@@ -8,7 +8,7 @@ Copyright (c) 2020-2023 Joelle Mbatchou, Andrey Ziyatdinov and Jonathan Marchini
 Distributed under the MIT License.
 Compiled with Boost Iostream library.
 
-Log of output saved in file : results/regenie/addit2/step1.log
+Log of output saved in file : results/regenie/addit2_step1.log
 
 Options in effect:
   --step 1 \
@@ -16,7 +16,7 @@ Options in effect:
   --phenoFile data/runs/addit2/final_phenotype.txt \
   --qt \
   --bsize 1000 \
-  --out results/regenie/addit2/step1
+  --out results/regenie/addit2_step1
 
 Fitting null model
  * bim              : [data_for_regenie/data_filtered.bim] n_snps = 5233
@@ -39,30 +39,30 @@ Fitting null model
  * setting memory...done
 
 Chromosome 15
- block [1] : 1000 snps  (20ms) 
-   -residualizing and scaling genotypes...done (13ms) 
-   -calc working matrices...done (281ms) 
-   -calc level 0 ridge...done (2354ms) 
- block [2] : 1000 snps  (18ms) 
-   -residualizing and scaling genotypes...done (11ms) 
-   -calc working matrices...done (270ms) 
-   -calc level 0 ridge...done (2201ms) 
- block [3] : 1000 snps  (16ms) 
-   -residualizing and scaling genotypes...done (6ms) 
-   -calc working matrices...done (261ms) 
-   -calc level 0 ridge...done (2061ms) 
- block [4] : 1000 snps  (17ms) 
-   -residualizing and scaling genotypes...done (5ms) 
-   -calc working matrices...done (259ms) 
-   -calc level 0 ridge...done (2325ms) 
- block [5] : 1000 snps  (16ms) 
-   -residualizing and scaling genotypes...done (6ms) 
-   -calc working matrices...done (259ms) 
-   -calc level 0 ridge...done (2267ms) 
- block [6] : 233 snps  (4ms) 
+ block [1] : 1000 snps  (31ms) 
+   -residualizing and scaling genotypes...done (18ms) 
+   -calc working matrices...done (450ms) 
+   -calc level 0 ridge...done (3858ms) 
+ block [2] : 1000 snps  (26ms) 
+   -residualizing and scaling genotypes...done (8ms) 
+   -calc working matrices...done (418ms) 
+   -calc level 0 ridge...done (3602ms) 
+ block [3] : 1000 snps  (26ms) 
+   -residualizing and scaling genotypes...done (8ms) 
+   -calc working matrices...done (421ms) 
+   -calc level 0 ridge...done (3368ms) 
+ block [4] : 1000 snps  (26ms) 
+   -residualizing and scaling genotypes...done (8ms) 
+   -calc working matrices...done (419ms) 
+   -calc level 0 ridge...done (3771ms) 
+ block [5] : 1000 snps  (26ms) 
+   -residualizing and scaling genotypes...done (8ms) 
+   -calc working matrices...done (418ms) 
+   -calc level 0 ridge...done (3663ms) 
+ block [6] : 233 snps  (6ms) 
    -residualizing and scaling genotypes...done (1ms) 
-   -calc working matrices...done (15ms) 
-   -calc level 0 ridge...done (32ms) 
+   -calc working matrices...done (23ms) 
+   -calc level 0 ridge...done (53ms) 
 
  Level 1 ridge...
    -on phenotype 1 (Phenotype_1)...done (1ms) 
@@ -70,15 +70,15 @@ Chromosome 15
 Output
 ------
 phenotype 1 (Phenotype_1) : 
-  0.01  : Rsq = 0.661163, MSE = 0.375956
-  0.25  : Rsq = 0.691854, MSE = 0.308084
-  0.5   : Rsq = 0.693363, MSE = 0.306516
-  0.75  : Rsq = 0.694596, MSE = 0.305308
-  0.99  : Rsq = 0.695061, MSE = 0.304913<- min value
-  * making predictions...writing LOCO predictions...done (23ms) 
+  0.01  : Rsq = 0.616893, MSE = 0.408579
+  0.25  : Rsq = 0.672561, MSE = 0.327465
+  0.5   : Rsq = 0.675034, MSE = 0.324842
+  0.75  : Rsq = 0.676547, MSE = 0.323331
+  0.99  : Rsq = 0.677156, MSE = 0.32279<- min value
+  * making predictions...writing LOCO predictions...done (39ms) 
 
-List of blup files written to: [results/regenie/addit2/step1_pred.list]
+List of blup files written to: [results/regenie/addit2_step1_pred.list]
 
-Elapsed time : 12.8027s
-End time: Tue Apr 28 18:12:33 2026
+Elapsed time : 20.7712s
+End time: Sun May 10 16:22:37 2026
 

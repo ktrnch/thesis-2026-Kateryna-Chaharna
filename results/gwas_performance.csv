@@ -1,5 +1,7 @@
 Conditions,True Positives,False Positives,True Negatives,False Negatives,True Causal SNPs
-b_lin_ld,5,730,4488,10,15
-b_lin,5,730,4488,10,15
-q_lin_ld,6,877,4341,9,15
-q_lin,6,877,4341,9,15
+b_lin_ld,4,1527,3696,6,10
+b_lin,2,1508,3715,8,10
+q_lin_ld,4,1897,3326,6,10
+q_lin,3,2006,3217,7,10
+addit2,4,2538,2683,8,12
+addit2_ld,5,1609,3609,10,15

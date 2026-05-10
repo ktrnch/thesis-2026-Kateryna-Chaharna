@@ -1,4 +1,4 @@
-Start time: Tue May  5 16:04:19 2026
+Start time: Sun May 10 16:25:28 2026
 
               |===========================|
               |      REGENIE v3.4.gz      |
@@ -40,28 +40,28 @@ Fitting null model
 
 Chromosome 15
  block [1] : 1000 snps  (28ms) 
-   -residualizing and scaling genotypes...done (16ms) 
-   -calc working matrices...done (449ms) 
-   -calc level 0 ridge...done (3850ms) 
+   -residualizing and scaling genotypes...done (17ms) 
+   -calc working matrices...done (450ms) 
+   -calc level 0 ridge...done (3853ms) 
  block [2] : 1000 snps  (27ms) 
    -residualizing and scaling genotypes...done (8ms) 
-   -calc working matrices...done (417ms) 
-   -calc level 0 ridge...done (3618ms) 
+   -calc working matrices...done (419ms) 
+   -calc level 0 ridge...done (3599ms) 
  block [3] : 1000 snps  (26ms) 
    -residualizing and scaling genotypes...done (8ms) 
    -calc working matrices...done (418ms) 
-   -calc level 0 ridge...done (3335ms) 
- block [4] : 1000 snps  (26ms) 
+   -calc level 0 ridge...done (3519ms) 
+ block [4] : 1000 snps  (27ms) 
    -residualizing and scaling genotypes...done (8ms) 
    -calc working matrices...done (418ms) 
-   -calc level 0 ridge...done (3801ms) 
+   -calc level 0 ridge...done (3799ms) 
  block [5] : 1000 snps  (26ms) 
    -residualizing and scaling genotypes...done (8ms) 
-   -calc working matrices...done (417ms) 
-   -calc level 0 ridge...done (3668ms) 
+   -calc working matrices...done (418ms) 
+   -calc level 0 ridge...done (3663ms) 
  block [6] : 233 snps  (5ms) 
    -residualizing and scaling genotypes...done (1ms) 
-   -calc working matrices...done (24ms) 
+   -calc working matrices...done (25ms) 
    -calc level 0 ridge...done (53ms) 
 
  Level 1 ridge...
@@ -70,15 +70,15 @@ Chromosome 15
 Output
 ------
 phenotype 1 (Phenotype_1) : 
-  0.01  : Rsq = 0.570214, MSE = 0.46044
-  0.25  : Rsq = 0.620373, MSE = 0.3796
-  0.5   : Rsq = 0.624089, MSE = 0.37578
-  0.75  : Rsq = 0.625632, MSE = 0.374275
-  0.99  : Rsq = 0.625807, MSE = 0.374257<- min value
-  * making predictions...writing LOCO predictions...done (38ms) 
+  0.01  : Rsq = 0.580018, MSE = 0.439801
+  0.25  : Rsq = 0.64192, MSE = 0.358085
+  0.5   : Rsq = 0.644865, MSE = 0.354998
+  0.75  : Rsq = 0.645579, MSE = 0.354328
+  0.99  : Rsq = 0.64853, MSE = 0.351451<- min value
+  * making predictions...writing LOCO predictions...done (39ms) 
 
 List of blup files written to: [results/regenie/q_lin_ld_step1_pred.list]
 
-Elapsed time : 20.7646s
-End time: Tue May  5 16:04:40 2026
+Elapsed time : 20.9281s
+End time: Sun May 10 16:25:49 2026
 

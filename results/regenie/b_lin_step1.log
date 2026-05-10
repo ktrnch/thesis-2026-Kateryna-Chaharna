@@ -1,4 +1,4 @@
-Start time: Tue May  5 16:07:39 2026
+Start time: Sun May 10 16:29:05 2026
 
               |===========================|
               |      REGENIE v3.4.gz      |
@@ -27,8 +27,8 @@ Fitting null model
    -number of phenotyped individuals with no missing data = 2504
  * number of individuals used in analysis = 2504
  * case-control counts for each trait:
-   - 'Phenotype_1': 501 cases and 2003 controls
-   -fitting null logistic regression on binary phenotypes...done (2ms) 
+   - 'Phenotype_1': 500 cases and 2004 controls
+   -fitting null logistic regression on binary phenotypes...done (0ms) 
    -residualizing and scaling phenotypes...done (0ms) 
    -WARNING: Sample size is less than 5,000 so using LOOCV instead of 5-fold CV.
  * # threads        : [7]
@@ -41,46 +41,46 @@ Fitting null model
  * setting memory...done
 
 Chromosome 15
- block [1] : 1000 snps  (17ms) 
-   -residualizing and scaling genotypes...done (11ms) 
-   -calc working matrices...done (738ms) 
-   -calc level 0 ridge...done (274ms) 
- block [2] : 1000 snps  (16ms) 
-   -residualizing and scaling genotypes...done (6ms) 
-   -calc working matrices...done (722ms) 
-   -calc level 0 ridge...done (264ms) 
- block [3] : 1000 snps  (16ms) 
-   -residualizing and scaling genotypes...done (6ms) 
-   -calc working matrices...done (686ms) 
-   -calc level 0 ridge...done (260ms) 
- block [4] : 1000 snps  (16ms) 
-   -residualizing and scaling genotypes...done (5ms) 
-   -calc working matrices...done (733ms) 
-   -calc level 0 ridge...done (261ms) 
- block [5] : 1000 snps  (16ms) 
-   -residualizing and scaling genotypes...done (6ms) 
-   -calc working matrices...done (724ms) 
-   -calc level 0 ridge...done (264ms) 
- block [6] : 233 snps  (3ms) 
-   -residualizing and scaling genotypes...done (2ms) 
-   -calc working matrices...done (21ms) 
-   -calc level 0 ridge...done (16ms) 
+ block [1] : 1000 snps  (28ms) 
+   -residualizing and scaling genotypes...done (15ms) 
+   -calc working matrices...done (1203ms) 
+   -calc level 0 ridge...done (445ms) 
+ block [2] : 1000 snps  (27ms) 
+   -residualizing and scaling genotypes...done (8ms) 
+   -calc working matrices...done (1159ms) 
+   -calc level 0 ridge...done (430ms) 
+ block [3] : 1000 snps  (26ms) 
+   -residualizing and scaling genotypes...done (7ms) 
+   -calc working matrices...done (1127ms) 
+   -calc level 0 ridge...done (431ms) 
+ block [4] : 1000 snps  (27ms) 
+   -residualizing and scaling genotypes...done (7ms) 
+   -calc working matrices...done (1187ms) 
+   -calc level 0 ridge...done (429ms) 
+ block [5] : 1000 snps  (27ms) 
+   -residualizing and scaling genotypes...done (8ms) 
+   -calc working matrices...done (1203ms) 
+   -calc level 0 ridge...done (430ms) 
+ block [6] : 233 snps  (5ms) 
+   -residualizing and scaling genotypes...done (3ms) 
+   -calc working matrices...done (34ms) 
+   -calc level 0 ridge...done (29ms) 
 
  Level 1 ridge with logistic regression...
-   -on phenotype 1 (Phenotype_1)...done (13ms) 
+   -on phenotype 1 (Phenotype_1)...done (21ms) 
 
 Output
 ------
 phenotype 1 (Phenotype_1) : 
-  0.01  : Rsq = 0.447372, MSE = 0.0981147, -logLik/N = 0.332635
-  0.25  : Rsq = 0.505762, MSE = 0.0860811, -logLik/N = 0.293289
-  0.5   : Rsq = 0.510742, MSE = 0.0856299, -logLik/N = 0.291102
-  0.75  : Rsq = 0.513086, MSE = 0.0854973, -logLik/N = 0.290138
-  0.99  : Rsq = 0.51597, MSE = 0.0853161, -logLik/N = 0.289051<- min value
-  * making predictions...writing LOCO predictions...done (26ms) 
+  0.01  : Rsq = 0.712889, MSE = 0.0599756, -logLik/N = 0.241899
+  0.25  : Rsq = 0.761441, MSE = 0.0492781, -logLik/N = 0.199709
+  0.5   : Rsq = 0.760416, MSE = 0.0497049, -logLik/N = 0.199345<- min value
+  0.75  : Rsq = 0.759725, MSE = 0.0499762, -logLik/N = 0.199394
+  0.99  : Rsq = 0.758857, MSE = 0.0503301, -logLik/N = 0.199732
+  * making predictions...writing LOCO predictions...done (45ms) 
 
 List of blup files written to: [results/regenie/b_lin_step1_pred.list]
 
-Elapsed time : 5.17571s
-End time: Tue May  5 16:07:45 2026
+Elapsed time : 8.42554s
+End time: Sun May 10 16:29:13 2026
 
