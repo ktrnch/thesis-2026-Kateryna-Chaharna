@@ -2,9 +2,13 @@ __pycache__/
 *.pyc
 .venv/
 env/
+data/
+data_for_regenie/
+helpers/
+results/
 .DS_Store
 
-*_meta.json
+*_config.json
 *_weights*.tsv
 *_h2_report.tsv
 phenotype_*.txt
@@ -14,3 +18,7 @@ phenotype_*.txt
 *.raw
 *.tsv
 *.sh
+
+# Regenie binary
+regenie_v3.4.gz_x86_64_OSX
+regenie_v3.4.gz_x86_64_OSX.zip
