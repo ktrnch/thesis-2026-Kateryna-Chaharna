@@ -2,10 +2,6 @@ __pycache__/
 *.pyc
 .venv/
 env/
-data/
-data_for_regenie/
-helpers/
-results/
 .DS_Store
 
 *_config.json
