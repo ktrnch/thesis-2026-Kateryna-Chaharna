@@ -11,20 +11,20 @@ This repository stores:
 
 ## Repository Structure
 
-`extract_data.py`          # Main script for extracting and processing results
-`README.md`                # This file
-`data/`
-   `configs/`              # Gen2PhenSim configuration files for all runs
-      `*.json`           # Individual configuration files (various scenarios and seeds)
-   `runs/`                 # Output directories from Gen2PhenSim simulations
-`data_for_regenie/`         # GWAS data processed for Regenie analysis
-   `data_filtered.*`      # Binary PLINK format files (filtered dataset)
-   `data_step2_filtered.* `# Binary BGEN format files (step 2 analysis)
-   `data.fam`              # Family file
-`results/`                  # Analysis outputs
-   `extracted_data.csv`    # Processed data from extract_data.py
-   `manhattan_plots/`      # Visualization outputs
-   `regenie/`              # Regenie GWAS results
+- `extract_data.py`          Main script for extracting and processing results
+- `README.md`                This file
+- `data/`
+   - `configs/`              Gen2PhenSim configuration files for all runs
+      - `*.json`             Individual configuration files (various scenarios and seeds)
+   - `runs/`                 Output directories from Gen2PhenSim simulations
+- `data_for_regenie/`         GWAS data processed for Regenie analysis
+   - `data_filtered.*`         Binary PLINK format files (filtered dataset)
+   - `data_step2_filtered.* `   Binary BGEN format files (step 2 analysis)
+   - `data.fam`              Family file
+- `results/`                 Analysis outputs
+   - `extracted_data.csv`    Processed data from extract_data.py
+   - `manhattan_plots/`      Visualization outputs
+   - `regenie/`              Regenie GWAS results
 
 
 ## Requirements
