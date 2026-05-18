@@ -17,7 +17,7 @@ def file_list_from_directory(gen2phen_dir, regenie_dir):
         step2_outputs.append(str(file))
     return step2_outputs, true_causal_snps_files
 
-def extract_data_from_files(file_names: list, p_value_threshold=5e-8):
+def extract_data_from_files(file_names: list, p_value_threshold):
     step2_outputs = []
     true_causal_snps = []
     for file_name in file_names:
@@ -49,15 +49,17 @@ def compare_causal_snps(identified_causal_snps, true_causal_snps, total_num_snps
         "True Positives": len(true_positives),
         "False Positives": len(false_positives),
         "False Negatives": len(false_negatives),
-        "True Negatives": true_negatives
+        "True Negatives": true_negatives,
+        "Identified Causal SNPs": len(identified_causal_snps)
     }
 # PLOTTING PART
-def make_manchetan_plot(output_path, true_causal_snps, snp_log10p_values,condition, p_value_threshold=5e-8):
+def make_manchetan_plot(output_path, true_causal_snps, snp_log10p_values,condition, p_value_threshold):
     df = snp_log10p_values.copy()
     df['-log10(P_VALUE)'] = df['LOG10P']
     df['color'] = df['ID'].apply(lambda x: 'red' if x in true_causal_snps else 'blue')
+    df["transperancy"] = df['ID'].apply(lambda x: 1 if x in true_causal_snps else 0.5)
     plt.figure(figsize=(10, 6))
-    plt.scatter(df['ID'], df['-log10(P_VALUE)'], color=df['color'], s=10)
+    plt.scatter(df['ID'], df['-log10(P_VALUE)'], color=df['color'], s=10, alpha=df['transperancy'])
     plt.axhline(y=-np.log10(p_value_threshold), color='red', linestyle='--')  # Add a horizontal line for the significance threshold
     plt.xlabel('Chromosome 15')
     plt.ylabel('-log10(P_VALUE)')
@@ -67,7 +69,7 @@ def make_manchetan_plot(output_path, true_causal_snps, snp_log10p_values,conditi
     plt.close()
 
 
-
+p_value_threshold=0.05/5233  # Bonferroni correction for multiple testing
 
 data_list = []
 
@@ -90,16 +92,19 @@ try:
         for k in keys:
             step2_output = regenie_map[k]
             true_causal_snps_file = phenotype_map[k]
-            true_causal_snps, identified_causal_snps, snp_log10p_values, snp_p_values, total_num_snps = extract_data_from_files([step2_output, true_causal_snps_file])
+            true_causal_snps, identified_causal_snps, snp_log10p_values, snp_p_values, total_num_snps = extract_data_from_files([step2_output, true_causal_snps_file], p_value_threshold)
             results = compare_causal_snps(identified_causal_snps, true_causal_snps, total_num_snps)
             data_list.append({
                 "Prefix": k,
                 "True Positives": results["True Positives"],
                 "False Positives": results["False Positives"],
                 "False Negatives": results["False Negatives"],
-                "True Negatives": results["True Negatives"]
+                "True Negatives": results["True Negatives"],
+                "Identified Causal SNPs": results["Identified Causal SNPs"], 
+                "True Causal SNPs": len(true_causal_snps)
             })
-            make_manchetan_plot(f'results/manhattan_{k}.png', true_causal_snps, snp_log10p_values, condition=k)
+            if "10"in k:
+                make_manchetan_plot(f'results/manhattan_plots/manhattan_{k}.png', true_causal_snps, snp_log10p_values, condition=k, p_value_threshold=p_value_threshold)
 
     except Exception as e:
         print(f"Failed on {k}: {e}")

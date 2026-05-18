@@ -1,64 +1,69 @@
-# Genotype-phenotype simulator "Gen2PhenSim" 
+# Thesis Analysis and Reproducibility Repository
 
-Genotype-to-phenotype simulator from PLINK `.raw` input.
-Can be used for performance assessment of statistical tools that are used to study genotype-phenotype relationships. 
+This repository is a complementary resource to [Gen2PhenSim](https://github.com/genodeco/Phen-sim), containing simulation configurations, run outputs, and downstream analysis results.
 
 ## Overview
 
-- Supports quantitative and binary phenotypes
-- Supports additive/pure interaction modes
-- Optional LD-aware SNP inclusion
-- Configurable heritability/noise
+This repository stores:
+- Configuration files and run outputs from Gen2PhenSim simulator used in the thesis
+- Results from Regenie v3.4 genome-wide association study (GWAS) analysis
+- Data extraction and processing scripts for analyzing simulation results
 
 ## Repository Structure
-- `main.py` — loads config and runs simulation
-- `converter.py` — generates config JSON files
-- `simulator/`
-  - `simulate.py` — core simulation pipeline
-  - `ld.py`, `sampling.py`, `io_utils.py`, `transformer.py` — helpers
-- `data/configs/` — archived configs (`<prefix>_config.json`)
-- `data/runs/<prefix>/` — simulation outputs per run
+
+`extract_data.py`          # Main script for extracting and processing results
+`README.md`                # This file
+`data/`
+   `configs/`              # Gen2PhenSim configuration files for all runs
+      `*.json`           # Individual configuration files (various scenarios and seeds)
+   `runs/`                 # Output directories from Gen2PhenSim simulations
+`data_for_regenie/`         # GWAS data processed for Regenie analysis
+   `data_filtered.*`      # Binary PLINK format files (filtered dataset)
+   `data_step2_filtered.* `# Binary BGEN format files (step 2 analysis)
+   `data.fam`              # Family file
+`results/`                  # Analysis outputs
+   `extracted_data.csv`    # Processed data from extract_data.py
+   `manhattan_plots/`      # Visualization outputs
+   `regenie/`              # Regenie GWAS results
+
 
 ## Requirements
-- Python 3
-- `numpy`
-- `pandas`
 
-## Configuration
-Main fields include:
-- run settings (`output_prefix`, `seed`, `phenotype_number`, `n_indiv_max`)
-- causal SNP pool settings
-- LD settings (`ld_mode`, `ld_threshold`, `chromosome_file`)
-- interaction settings (`second_inter_num`, `third_inter_num`, etc.)
-- heritability/noise settings (`target_h2`, `noise_factor`)
-- output mapping settings
+- Python 3.8+
+- `numpy` - Numerical computing
+- `pandas` - Data manipulation and analysis
+- `matplotlib` (optional) - For visualization
+- Regenie v3.4+ - For GWAS analysis (if running GWAS)
 
-## How to Run
-1. Create/update config:
-   - `python3 converter.py`
-2. Run simulation:
-   - `python3 main.py`
+## Usage
+
+### Extracting Data
+
+Run the data extraction script(`extract_data.py `) to process simulation results.
+
+The script will:
+- Read simulation outputs from `data/runs/`
+- Process configuration files from `data/configs/`
+- Generate `results/extracted_data.csv` with processed results
+
+### GWAS Analysis
+
+Regenie analysis results are stored in `results/regenie/`. Processed data files for Regenie are located in `data_for_regenie/`.
+Phenotype files are stored in `data/runs/`
+
+## Configuration Files
+
+Configuration files in `data/configs/` follow the naming convention:
+- `{model}_config.json` - Base configuration (e.g., `addit2_config.json`, `b_lin_config.json`)
+- `{model}_ld_config.json` - Configuration with linkage disequilibrium
+- `{model}_seed{N}_config.json` - Configuration with specific random seed
+
 
 ## Outputs
-Each run is written to `data/runs/<output_prefix>/`:
-- `phenotype_without_noise.txt`
-- `phenotype_with_noise.txt`
-- `final_phenotype.txt`
-- `phenotype_snps.csv`
-- `<prefix>_SNP_ASSIGNMENTS.txt`
-- `<prefix>_weights*.tsv`
-- `<prefix>_h2_report.tsv` (quantitative)
-- `<prefix>_meta.json`
 
-Config snapshot:
-- `data/configs/<prefix>_config.json`
+Key output files:
+- `results/extracted_data.csv` - Compiled results from all simulation runs
+- `results/manhattan_plots/` - Manhattan plots and other visualizations
+- `results/regenie/` - GWAS results including association statistics and p-values
 
-# Reproducibility
 
-Simulated data can be reproduced using the same seed number. Besides there is a configs archive. It stores data provided by user for the simulation.
-`data/configs/` — archived configs (`<prefix>_config.json`) can be identified based on prefix. 
-
-# Limitations
-Simulator only accepts PLINK.raw files and relies on its structure. 
-
-# How to cite this simulator
