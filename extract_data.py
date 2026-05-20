@@ -69,7 +69,7 @@ def make_manchetan_plot(output_path, true_causal_snps, snp_log10p_values,conditi
     plt.close()
 
 
-p_value_threshold=0.05/5233  # Bonferroni correction for multiple testing
+p_value_threshold=0.5/5233  # Bonferroni correction for multiple testing
 
 data_list = []
 
